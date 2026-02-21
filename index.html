@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversión perfusión</title>
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.6em;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 420px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 15px;
+      display: block;
+    }
+
+    input, select {
+      width: 100%;
+      font-size: 1.2em;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 15px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 10px;
+      background: #007aff;
+      color: white;
+      font-weight: bold;
+    }
+
+    .resultado {
+      margin-top: 25px;
+      font-size: 1.4em;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .nota {
+      margin-top: 15px;
+      font-size: 0.9em;
+      color: #555;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Perfusión 250 mg / 50 ml</h1>
+
+<div class="card">
+
+  <label for="modo">Qué quieres calcular</label>
+  <select id="modo" onchange="cambiarModo()">
+    <option value="ml">Calcular ml/h</option>
+    <option value="mg">Calcular mg/h</option>
+  </select>
+
+  <label for="mg">mg/h</label>
+  <input type="number" id="mg" inputmode="decimal" step="0.1">
+
+  <label for="ml">ml/h</label>
+  <input type="number" id="ml" inputmode="decimal" step="0.1">
+
+  <button onclick="calcular()">Calcular</button>
+
+  <div class="resultado" id="resultado"></div>
+
+  <div class="nota">
+    Concentración fija: 250 mg en 50 ml (5 mg/ml)
+  </div>
+
+</div>
+
+<script>
+  const CONCENTRACION = 5; // mg/ml
+
+  function cambiarModo() {
+    const modo = document.getElementById("modo").value;
+    document.getElementById("resultado").innerText = "";
+
+    if (modo === "ml") {
+      document.getElementById("mg").disabled = false;
+      document.getElementById("ml").disabled = true;
+      document.getElementById("ml").value = "";
+    } else {
+      document.getElementById("ml").disabled = false;
+      document.getElementById("mg").disabled = true;
+      document.getElementById("mg").value = "";
+    }
+  }
+
+  function calcular() {
+    const modo = document.getElementById("modo").value;
+    const mgInput = document.getElementById("mg");
+    const mlInput = document.getElementById("ml");
+
+    if (modo === "ml") {
+      const mg = parseFloat(mgInput.value);
+      if (isNaN(mg)) {
+        resultado.innerText = "Introduce mg/h";
+        return;
+      }
+      const ml = mg / CONCENTRACION;
+      mlInput.value = ml.toFixed(2);
+      resultado.innerText = ml.toFixed(2) + " ml/h";
+    } else {
+      const ml = parseFloat(mlInput.value);
+      if (isNaN(ml)) {
+        resultado.innerText = "Introduce ml/h";
+        return;
+      }
+      const mg = ml * CONCENTRACION;
+      mgInput.value = mg.toFixed(2);
+      resultado.innerText = mg.toFixed(2) + " mg/h";
+    }
+  }
+
+  // Inicializar estado
+  cambiarModo();
+</script>
+
+</body>
+</html>
