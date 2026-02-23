@@ -72,27 +72,35 @@
 
 <body>
 
-<h1>Perfusión 250 mg / 50 ml</h1>
+<h1>Furosemida 250 mg / 50 ml</h1>
 
 <div class="card">
 
-  <label for="mg">mg/h</label>
-  <input type="number" id="mg" inputmode="decimal" step="0.1">
+  <div id="bloque-mg">
+    <label for="mg">mg/h</label>
+    <input type="number" id="mg" inputmode="decimal" step="0.1">
+  </div>
 
   <button onclick="invertir()">⇅ Invertir cálculo</button>
 
-  <label for="ml">ml/h</label>
-  <input type="number" id="ml" inputmode="decimal" step="0.1" disabled>
-
-  <div class="nota">
-    Concentración fija: 250 mg en 50 ml (5 mg/ml)
+  <div id="bloque-ml">
+    <label for="ml">ml/h</label>
+    <input type="number" id="ml" inputmode="decimal" step="0.1" disabled>
   </div>
+
+  <div class="nota" id="formula"></div>
 
 </div>
 
 <script>
   const CONCENTRACION = 5; // mg/ml
   let modo = "ml"; // ml = calcular ml/h desde mg/h
+
+  const card = document.querySelector('.card');
+  const bloqueMg = document.getElementById('bloque-mg');
+  const bloqueMl = document.getElementById('bloque-ml');
+  const invertirBtn = card.querySelector('button');
+  const formula = document.getElementById('formula');
 
   const mgInput = document.getElementById("mg");
   const mlInput = document.getElementById("ml");
@@ -102,20 +110,31 @@
     mlInput.classList.remove("activo");
 
     if (modo === "ml") {
+      // colocar mg antes del botón y ml después, manteniendo el botón fijo
+      card.insertBefore(bloqueMg, invertirBtn);
+      card.insertBefore(bloqueMl, null);
       mgInput.disabled = false;
       mlInput.disabled = true;
       mgInput.classList.add("activo");
       mlInput.value = "";
+      formula.innerText = "Fórmula: ml/h = mg/h ÷ concentración";
     } else {
+      // colocar ml antes del botón y mg después
+      card.insertBefore(bloqueMl, invertirBtn);
+      card.insertBefore(bloqueMg, null);
       mlInput.disabled = false;
       mgInput.disabled = true;
       mlInput.classList.add("activo");
       mgInput.value = "";
+      formula.innerText = "Fórmula: mg/h = ml/h × concentración";
     }
   }
 
   function invertir() {
     modo = (modo === "ml") ? "mg" : "ml";
+    // limpiar ambas casillas al invertir
+    mgInput.value = "";
+    mlInput.value = "";
     actualizarEstilo();
   }
 
