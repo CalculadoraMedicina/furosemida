@@ -72,7 +72,7 @@
 
 <body>
 
-<h1>Furosemida 250 mg / 50 ml</h1>
+<h1>Furosemida <br> 250 mg / 50 ml</h1>
 
 <div class="card">
 
@@ -117,7 +117,7 @@
       mlInput.disabled = true;
       mgInput.classList.add("activo");
       mlInput.value = "";
-      formula.innerText = "Fórmula: ml/h = mg/h ÷ concentración";
+      formula.innerHTML = "Fórmula: ml/h = mg/h ÷ concentración<br>(concentración = 5 mg/ml)";
     } else {
       // colocar ml antes del botón y mg después
       card.insertBefore(bloqueMl, invertirBtn);
@@ -126,7 +126,7 @@
       mgInput.disabled = true;
       mlInput.classList.add("activo");
       mgInput.value = "";
-      formula.innerText = "Fórmula: mg/h = ml/h × concentración";
+      formula.innerHTML = "Fórmula: mg/h = ml/h × concentración<br>(concentración = 5 mg/ml)";
     }
   }
 
